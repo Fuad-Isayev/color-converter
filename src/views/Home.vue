@@ -3,15 +3,11 @@
         <div class="title">
             <h1>RGBA to HEX Converter</h1>
         </div>
-        <div class="color-inputs">
-            <label for="red">R</label>
-            <input class="color-input" v-model="red" type="number" name="red" id="red" min="0" max="255">
-            <label for="green">G</label>
-            <input class="color-input" v-model="green" type="number" name="green" id="green" min="0" max="255">
-            <label for="blue">B</label>
-            <input class="color-input" v-model="blue" type="number" name="blue" id="blue" min="0" max="255">
-            <label for="alpha">A</label>
-            <input class="color-input" v-model="alpha" type="number" name="alpha" id="alpha" step="0.01" min="0" max="1">
+        <div class="color-inputs" :class="isMobile ? 'flex-column' : ''">
+            <ColorInput v-model="red" color="red" />
+            <ColorInput v-model="green" color="green" />
+            <ColorInput v-model="blue" color="blue" />
+            <ColorInput v-model="alpha" color="alpha" max="1" maxLength="4" />
         </div>
         <h1> {{ hexColor(red, blue, green, alpha) }} </h1>
         <div class="box" :style="'background: ' + hexColor(red, blue, green, alpha)">
@@ -20,6 +16,8 @@
 </template>
 
 <script>
+import ColorInput from '@/components/Color-Input';
+
 export default {
     name: "Home",
     data() {
@@ -28,6 +26,14 @@ export default {
             green: 155,
             blue: 200,
             alpha: 0.85
+        }
+    },
+    components: {
+        ColorInput,
+    },
+    computed: {
+        isMobile() {
+            return this.$store.getters.isMobile;
         }
     },
     methods: {
@@ -39,7 +45,7 @@ export default {
             let hex4 = green % 16;
             let hex5 = Math.floor(blue / 16);
             let hex6 = blue % 16;
-            alpha = alpha <= 1 ? alpha * 100 : alpha;
+            alpha = Math.round(alpha * 100);
 
             const mapColors = {
                 0: '0',
@@ -164,15 +170,64 @@ export default {
                 '100': ''
             }
 
-            hex += mapColors[hex1] + mapColors[hex2] + mapColors[hex3] + mapColors[hex4] + mapColors[hex5] + mapColors[hex6] + mapAlpha[alpha]
+            hex += mapColors[hex1] + mapColors[hex2] + mapColors[hex3] + mapColors[hex4] + mapColors[hex5] + mapColors[hex6] + mapAlpha[alpha];
 
-            return hex;
+
+            return hex.includes('undefined') ? 'Invalid input' : hex;
         }
+    },
+    watch: {
+        red(val) {
+            if (val >= 255) {
+                this.red = 255;
+            } else {
+                this.red = document.getElementById('red').value = val.replace(/\D/g, '');
+            }
+        },
+        green(val) {
+            if (val >= 255) {
+                this.green = 255;
+            } else {
+                this.green = document.getElementById('green').value = val.replace(/\D/g, '');
+            }
+        },
+        blue(val) {
+            if (val >= 255) {
+                this.blue = 255;
+            } else {
+                this.blue = document.getElementById('blue').value = val.replace(/\D/g, '');
+            }
+        },
+        alpha(newVal) {
+            if (newVal >= 1) {
+                this.alpha = document.getElementById('alpha').value = '1';
+            } else if (/(?![.\d])\D/g.test(newVal)) {
+                this.alpha = document.getElementById('alpha').value = newVal.replace(/(?![.\d])\D/g, '');
+            } else if (newVal.match(/\./g)) {
+                //Replace the dot if it is not coming after '0'
+                this.alpha = document.getElementById('alpha').value = newVal.replace(/(?<!0)\./g, '');
+                //Replace the dot if it is no the only dot
+                if (newVal.match(/(?<=\..*)\./g)) {
+                    this.alpha = document.getElementById('alpha').value = newVal.replace(/(?<=\..*)\./g, '');
+                }
+            }
+        },
     }
 }
 </script>
 
-<style>
+<style lang="scss">
+.color-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.flex-column {
+        flex-direction: column;
+        align-items: start;
+    }
+}
+
 .box {
     width: 150px;
     height: 150px;
@@ -181,24 +236,5 @@ export default {
     margin-right: auto;
     border: 1px solid rgba(0, 0, 0, 0.148);
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.142);
-}
-
-.color-input {
-    width: 100px;
-    height: 50px;
-    font-size: 24px;
-    padding-left: 10px;
-    padding-right: 5px;
-    margin: 50px 0;
-}
-
-.color-inputs {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-label {
-    margin: 0 20px;
 }
 </style>

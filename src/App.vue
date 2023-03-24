@@ -11,6 +11,14 @@ export default {
   name: 'App',
   components: {
     Home,
+  },
+  mounted() {
+    window.onresize = this.getDimensions;
+  },
+  methods: {
+    getDimensions() {
+      this.$store.state.screenWidth = window.innerWidth;
+    }
   }
 }
 </script>
