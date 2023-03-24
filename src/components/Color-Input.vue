@@ -11,8 +11,9 @@
                 <div class="arrow arrow-up" :class="isMobile ? 'mobile' : ''">
                 </div>
             </div>
-            <div @click="decrement()" @mousedown="startDecrement" @mouseup="stopIncrement" @mouseleave="stopIncrement"
-                class="button decrement" :class="isMobile ? 'mobile' : ''">
+            <div @click="decrement()" @mousedown="startDecrement" @touchstart="startDecrement" @mouseup="stopIncrement"
+                @touchend="stopIncrement" @mouseleave="stopIncrement" class="button decrement"
+                :class="isMobile ? 'mobile' : ''">
                 <div class="arrow arrow-down" :class="isMobile ? 'mobile' : ''">
                 </div>
             </div>
