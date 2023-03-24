@@ -47,7 +47,10 @@ export default {
     },
     methods: {
         startIncrement() {
+            console.log('start increment');
+            console.log('TO ', this.timeOutId);
             this.timeOutId = setTimeout(() => {
+                console.log('set timeout');
                 this.intervalId = setInterval(this.increment, 100);
             }, 300);
         },
@@ -62,7 +65,7 @@ export default {
         },
         increment() {
             let incremention = this.color === 'alpha' ? 0.01 : 1;
-            if (this.value < this.$refs[this.color].max) {
+            if (+this.value < +this.$refs[this.color].max) {
                 let value = +this.value + incremention;
                 value = this.color === 'alpha' ? value.toFixed(2) : value;
                 this.$emit('input', value + '');
@@ -113,7 +116,6 @@ label {
     margin-left: -24px;
     align-self: center;
     visibility: hidden;
-    // background: rgba(0, 255, 255, 0.285);
 
     &:hover {
         visibility: visible;
