@@ -47,10 +47,7 @@ export default {
     },
     methods: {
         startIncrement() {
-            console.log('start increment');
-            console.log('TO ', this.timeOutId);
             this.timeOutId = setTimeout(() => {
-                console.log('set timeout');
                 this.intervalId = setInterval(this.increment, 100);
             }, 300);
         },
