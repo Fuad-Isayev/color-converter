@@ -22,9 +22,9 @@ export default {
     name: "Home",
     data() {
         return {
-            red: 100,
-            green: 155,
-            blue: 200,
+            red: 123,
+            green: 231,
+            blue: 255,
             alpha: 0.85
         }
     },
