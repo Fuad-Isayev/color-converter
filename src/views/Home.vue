@@ -10,7 +10,7 @@
             <ColorInput v-model="alpha" color="alpha" max="1" maxLength="4" />
         </div>
         <h1> {{ hexColor(red, blue, green, alpha) }} </h1>
-        <div class="box" :style="'background: ' + hexColor(red, blue, green, alpha)">
+        <div :class="isMobile ? 'mobile' : ''" class="box" :style="'background: ' + hexColor(red, blue, green, alpha)">
         </div>
     </div>
 </template>
@@ -224,7 +224,7 @@ export default {
 
     &.flex-column {
         flex-direction: column;
-        align-items: start;
+        align-items: center;
     }
 }
 
@@ -236,5 +236,9 @@ export default {
     margin-right: auto;
     border: 1px solid rgba(0, 0, 0, 0.148);
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.142);
+
+    &.mobile {
+        margin-top: 30px;
+    }
 }
 </style>

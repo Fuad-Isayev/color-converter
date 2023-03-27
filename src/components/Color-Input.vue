@@ -1,6 +1,6 @@
 <template>
     <div style="display: flex">
-        <label :for="color">{{ color[0].toUpperCase() }}</label>
+        <label :class="isMobile ? 'mobile' : ''" :for="color">{{ color[0].toUpperCase() }}</label>
         <input :ref="color" class="color-input" :class="isMobile ? 'mobile' : ''" :value="value"
             @input="$emit('input', $event.target.value)" type="text" :id="color" min="0" :max="max || 255"
             :maxlength="maxLength || 3">
@@ -95,7 +95,10 @@ export default {
     }
 
     &.mobile {
-        margin: 20px 0;
+        margin: 10px 0;
+        width: 50px;
+        height: 28px;
+        font-size: 14px;
     }
 }
 
@@ -103,6 +106,10 @@ label {
     margin: 0 12px 0 25px;
     font-size: 20px;
     align-self: center;
+
+    &.mobile {
+        font-size: 14px;
+    }
 }
 
 .increment-buttons {
@@ -123,7 +130,7 @@ label {
         flex-direction: row;
         align-items: center;
         width: 150px;
-        height: 50px;
+        height: 33.2px;
         margin-left: 20px;
         visibility: visible;
     }
@@ -147,13 +154,17 @@ label {
     }
 
     &.mobile {
-        // background: rgba(255, 192, 203, 0.296);
+        align-self: center;
         margin-left: 10px;
-        width: 48px;
-        height: 48px;
+        width: 36px;
+        height: 28px;
 
         &.decrement {
-            margin-left: 20px;
+            margin-left: 15px;
+        }
+
+        &.increment {
+            margin-bottom: 0;
         }
     }
 }
@@ -178,23 +189,18 @@ label {
     }
 
     &.mobile {
-        width: 20px;
-        height: 20px;
+        height: 6px;
+        width: 6px;
         position: static;
 
         &.arrow-up {
-            margin-top: 18px;
-            height: 15px;
-            width: 15px;
-            border-width: 6px 0 0 6px;
-
+            margin-top: 12px;
+            border-width: 3px 0 0 3px;
         }
 
         &.arrow-down {
-            height: 15px;
-            width: 15px;
             margin-top: 8px;
-            border-width: 0 6px 6px 0;
+            border-width: 0 3px 3px 0;
         }
     }
 }
